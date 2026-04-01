@@ -55,8 +55,21 @@
     @endforeach
 
 </table>
+<br>
+<form method="GET" action="/data" style="text-align:center; margin-bottom:10px;">
+    <select name="id_kategori">
+        <option value="">Semua Kategori</option>
+        @foreach ($kategori as $k)
+            <option value="{{ $k->id_kat }}">{{ $k->ket_kat }}</option>
+        @endforeach
+    </select>
+    <button type="submit">Filter</button>
+</form>
 
 <p style="text-align:center;">
     <a href="/form">Tambah Pengaduan</a>
+</p>
+<p style="text-align:center;">
+    <a href="/data">Lihat Data</a>
 </p>
 <hr>

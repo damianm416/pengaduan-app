@@ -45,9 +45,5 @@
     <button type="submit">Kirim</button>
 </form>
 
-<p style="text-align:center;">
-    <a href="/data">Lihat Data</a>
-</p>
-
 </body>
 </html>
