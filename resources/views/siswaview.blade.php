@@ -27,19 +27,19 @@
 
 <table>
     <tr>
-        <th>ID</th>
-        <th>NIS pelapor</th>
+        <th>id</th>
+        <th>nis pelapor</th>
         <th>Lokasi</th>
         <th>Keterangan</th>
         <th>Status</th>
         <th>Feedback</th>
-        <th>Aksi</th>
     </tr>
 
     @foreach ($data as $d)
     <tr>
         <td>{{ $d->id_pelapor }}</td>
         <td>{{ $d->nis }}</td>
+
         <td>{{ $d->lokasi }}</td>
         <td>{{ $d->keterangan }}</td>
 
@@ -49,16 +49,12 @@
         </td>
 
         <td>{{ $d->feedback ?? '-' }}</td>
-
-        <td>
-            <a href="/update/{{ $d->id_pelapor }}">Update</a>
-        </td>
     </tr>
     @endforeach
 
 </table>
 <br>
-<form method="GET" action="/data" style="text-align:center; margin-bottom:10px;">
+<form method="GET" action="/viewsiswa" style="text-align:center; margin-bottom:10px;">
     <select name="id_kategori">
         <option value="">Semua Kategori</option>
         @foreach ($kategori as $k)
@@ -67,6 +63,10 @@
     </select>
     <button type="submit">Filter</button>
 </form>
+
+<p style="text-align:center;">
+    <a href="/form">Tambah Pengaduan</a>
+</p>
 <p style="text-align:center;">
     <a href="/login">Log Out</a>
 <hr>

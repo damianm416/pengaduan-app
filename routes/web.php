@@ -29,7 +29,7 @@ Route::post('/submit', function (Request $request) {
 
     DB::table('input_aspirasi')->insert([
         'id_pelapor' => $id,
-        'nis' => 123,
+        'nis' => session('nis'),
         'id_kategori' => $request->id_kategori,
         'lokasi' => $request->lokasi,
         'keterangan' => $request->keterangan,
@@ -39,7 +39,7 @@ Route::post('/submit', function (Request $request) {
         'id_aspirasi' => rand(1,1000),
         'id_pelapor' => $id,
         'status' => 'Menunggu',
-        'feedback' => '-'
+        'feedback' => '-' 
     ]);
 
     return "Data berhasil disimpan!";
@@ -65,6 +65,30 @@ Route::get('/data', function (Request $request) {
     return view('data', compact('data', 'kategori'));
 
     if (session('login') != 'admin') {
+    return "Akses ditolak";
+}
+});
+
+Route::get('/viewsiswa', function (Request $request) {
+
+    $query = DB::table('input_aspirasi')
+        ->leftJoin('aspirasi', 'input_aspirasi.id_pelapor', '=', 'aspirasi.id_pelapor')
+        ->select(
+            'input_aspirasi.*',
+            'aspirasi.status',
+            'aspirasi.feedback'
+        );
+
+    if ($request->id_kategori) {
+        $query->where('input_aspirasi.id_kategori', $request->id_kategori);
+    }
+
+    $data = $query->get();
+    $kategori = DB::table('kategori')->get();
+
+    return view('siswaview', compact('data', 'kategori'));
+
+    if (session('login') != 'siswa') {
     return "Akses ditolak";
 }
 });
@@ -103,12 +127,17 @@ Route::post('/login', function (Request $request) {
 
     $siswa = DB::table('siswa')
         ->where('nis', $request->username)
+        ->where('password', $request->password)
         ->first();
 
     if ($siswa) {
-        session(['login' => 'siswa']);
-        return redirect('/form');
-    }
+    session([
+        'login' => 'siswa',
+        'nis' => $siswa->nis
+    ]);
+
+    return redirect('/viewsiswa');
+}
 
     return "Login gagal";
 });
